@@ -1,0 +1,64 @@
+[
+    {
+        "id": "validation_report",
+        "name": "Validation Report",
+        "sections": [
+            {
+                "id": "val_exec_summary",
+                "name": "Section A: Executive Summary",
+                "content": "Draft \"Section A: Executive Summary\" for the Validation Report. Include a Project Validation Overview, summarize Project Activities & Technology based on project documents, and formulate a Validation Conclusion and Recommendation based on the user's opinion.\n\nUser Assessment: {{assessment}}\nUser Opinion: {{opinion}}"
+            },
+            {
+                "id": "val_team_means",
+                "name": "Sections B & C: Validation Team & Means",
+                "content": "Draft \"Section B: Validation Team\" and \"Section C: Means of Validation\". Detail the validation team members, the desk review process, on-site inspection activities, interviews conducted, and the sampling approach used. \n\nUser Assessment: {{assessment}}"
+            },
+            {
+                "id": "val_findings",
+                "name": "Section D: Validation Findings",
+                "content": "Draft \"Section D: Validation Findings\". Based on all project documents and standard requirements, provide a detailed analysis of the project's compliance, covering prior consideration, PDD conformity, project activity description, methodology application, baseline scenario, additionality, and monitoring plan.\n\nUser Assessment: {{assessment}}"
+            },
+            {
+                "id": "val_iqc",
+                "name": "Section E: Internal Quality Control",
+                "content": "Draft \"Section E: Internal Quality Control\". Describe the VVB's internal quality control and technical review process that was applied to this validation engagement.\n\nUser Assessment: {{assessment}}"
+            },
+            {
+                "id": "val_opinion",
+                "name": "Section F: Validation Opinion",
+                "content": "Draft \"Section F: Validation Opinion\". Synthesize all findings and assessments into a final, formal validation opinion for the project.\n\nUser Opinion: {{opinion}}"
+            }
+        ]
+    },
+    {
+        "id": "verification_report",
+        "name": "Verification Report",
+        "sections": [
+            {
+                "id": "ver_exec_summary",
+                "name": "Section A: Executive Summary",
+                "content": "Draft \"Section A: Executive Summary\" for the Verification Report. Summarize the verification scope, activities, and the final certified GHG emission reductions for the monitoring period.\n\nUser Assessment: {{assessment}}\nUser Opinion: {{opinion}}"
+            },
+            {
+                "id": "ver_team_materiality",
+                "name": "Sections B & C: Team & Materiality",
+                "content": "Draft \"Section B: Verification Team\" and \"Section C: Application of Materiality\". Detail the verification team and explain the materiality threshold and its application during the verification process.\n\nUser Assessment: {{assessment}}"
+            },
+            {
+                "id": "ver_means",
+                "name": "Section D: Means of Verification",
+                "content": "Draft \"Section D: Means of Verification\". Describe the desk/document review, on-site inspection (if any), interviews conducted, and the sampling approach used during verification.\n\nUser Assessment: {{assessment}}"
+            },
+            {
+                "id": "ver_findings",
+                "name": "Section E: Verification Findings",
+                "content": "Draft \"Section E: Verification Findings\". Detail the assessment of compliance with the monitoring report, project implementation, post-registration changes, and the assessment of data and calculations for emission reductions.\n\nUser Assessment: {{assessment}}"
+            },
+            {
+                "id": "ver_iqc_opinion",
+                "name": "Sections F, G, H: IQC, Opinion & Certification",
+                "content": "Draft \"Section F: Internal Quality Control\", \"Section G: Verification Opinion\", and \"Section H: Certification Statement\". Describe the quality control process, provide the final verification opinion, and write the formal certification statement.\n\nUser Opinion: {{opinion}}"
+            }
+        ]
+    }
+]

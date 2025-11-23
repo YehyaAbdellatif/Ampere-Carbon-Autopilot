@@ -1,0 +1,19 @@
+{
+    "id": "main_governing",
+    "name": "Main Governing Requirements",
+    "description": "Core requirements applicable to all projects, regardless of the selected standard.",
+    "documents": [
+        {
+            "id": "gov_doc_vvm_001",
+            "name": "VVM - Project Level Validation & Verification Manual",
+            "applicability": "sometimes",
+            "content": "Manual for validation and verification of project-level GHG reduction activities:\n\n- Applies to project validation (validation of project design documents)\n- Applies to project verification (verification of emission reduction claims)\n- Covers methodologies, baseline scenarios, and monitoring plan assessment\n- Requires evidence of additionality and permanence\n- Mandates detailed sampling plans for verification activities\n- Specifies documentation requirements for project activities"
+        },
+        {
+            "id": "gov_doc_vvm_002",
+            "name": "VVM - Organizational Level Verification Manual",
+            "applicability": "sometimes",
+            "content": "Manual for verification of organizational-level GHG statements:\n\n- Applies to GHG inventory verification (ISO 14064-1 inventories)\n- Applies to CORSIA verification (airline emission reports)\n- Covers organizational boundary assessment\n- Requires verification of Scope 1, 2, and 3 emissions\n- Mandates materiality assessment and error detection\n- Specifies requirements for data management systems verification\n- Requires evidence of calculation methodologies and emission factors"
+        }
+    ]
+}

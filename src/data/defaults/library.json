@@ -1,0 +1,26 @@
+[
+    {
+        "id": "lib_kb_1",
+        "name": "Ampere Audit Style Guide",
+        "type": "knowledge_base",
+        "content": "\n        1. Tone: The tone should be formal, objective, and evidence-based. Avoid subjective adjectives like \"excellent\" or \"terrible\".\n        2. Formatting: Use clear headings and bullet points for lists of evidence.\n        3. Citations: Always reference the specific document name and section number when stating a fact (e.g., \"As stated in the PDD, Section 3.1...\").\n        4. Terminology: Use \"Project Proponent\" instead of \"Client\". Use \"VVB\" instead of \"Auditor\" in formal sections.\n        "
+    },
+    {
+        "id": "lib_find_1",
+        "name": "Example CAR for Monitoring",
+        "type": "finding",
+        "content": "\n        {\n          \"type\": \"CAR\",\n          \"description\": \"The monitoring report for the period 2023-01-01 to 2023-12-31 does not include records for equipment calibration as required by the monitoring plan. Specifically, the gas flow meter (serial #12345) was not calibrated in accordance with manufacturer specifications.\",\n          \"reference\": \"Monitoring Plan Section 4.2: Equipment Calibration\"\n        }\n        "
+    },
+    {
+        "id": "lib_report_1",
+        "name": "Example Report Introduction",
+        "type": "report",
+        "content": "This report summarizes the independent validation of the 'Rural Solar Power Initiative' project. The project's primary objective is the installation and operation of a 20 MW solar photovoltaic power plant in the province of Example-ville. The validation was conducted against the requirements of the Verified Carbon Standard (VCS), Version 4.1. The assessment covered a review of the Project Description (PD), monitoring plan, and supporting documentation provided by the project proponent, Future Energy Corp."
+    },
+    {
+        "id": "lib_response_1",
+        "name": "Example Response to Client Finding",
+        "type": "response_finding",
+        "content": "Thank you for your query regarding Finding CAR-02. We acknowledge the additional data provided. Our team has reviewed the revised emission calculations and can confirm that they now align with the methodological requirements. We recommend updating Section 6.3 of the Project Document to reflect this change. The finding will be officially closed upon receipt of the revised PD. Please let us know if you require any further clarification."
+    }
+]

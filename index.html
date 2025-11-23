@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-slate-50 dark:bg-slate-900">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ampere | Environmental Consultancy</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            display: ['Space Grotesk', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            ampere: {
+              mint: '#00DDB3',
+              navy: '#002A53',
+              green: '#009175',
+              blue: '#0099dd',
+              'light-grey': '#F3F4F6',
+              'dark-bg': '#0B1120',
+              'card-dark': '#1E293B',
+            }
+          },
+          boxShadow: {
+            'mint': '0 10px 40px -10px rgba(0, 221, 179, 0.3)',
+            'navy': '0 10px 40px -10px rgba(0, 42, 83, 0.3)',
+            'mint-lg': '0 20px 60px -15px rgba(0, 221, 179, 0.4)',
+            'navy-lg': '0 20px 60px -15px rgba(0, 42, 83, 0.4)',
+          },
+          animation: {
+            'thinking-bar': 'thinking-bar 2s linear infinite',
+            'fade-in': 'fade-in 0.6s ease-out forwards',
+            'slide-up': 'slide-up 0.5s ease-out forwards',
+            'slide-up-delay-1': 'slide-up 0.5s ease-out 0.1s forwards',
+            'slide-up-delay-2': 'slide-up 0.5s ease-out 0.2s forwards',
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'shimmer': 'shimmer 2.5s linear infinite',
+            'float': 'float 6s ease-in-out infinite',
+            'grid-move': 'grid-move 40s linear infinite',
+            'blob': 'blob 10s infinite',
+          },
+          keyframes: {
+            'thinking-bar': {
+              '0%': { 'background-position': '200% 0' },
+              '100%': { 'background-position': '-200% 0' },
+            },
+            'fade-in': {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            },
+            'slide-up': {
+              '0%': { opacity: '0', transform: 'translateY(20px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            'shimmer': {
+              '0%': { backgroundPosition: '200% 0' },
+              '100%': { backgroundPosition: '-200% 0' }
+            },
+            'float': {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-5px)' },
+            },
+            'grid-move': {
+              '0%': { backgroundPosition: '0 0' },
+              '100%': { backgroundPosition: '40px 40px' }
+            },
+            'blob': {
+              '0%': { transform: 'translate(0px, 0px) scale(1)' },
+              '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+              '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+              '100%': { transform: 'translate(0px, 0px) scale(1)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    /* Custom Utilities */
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    /* Dynamic Background Pattern */
+    .bg-grid-pattern {
+      background-image: radial-gradient(rgba(0, 42, 83, 0.08) 1px, transparent 1px);
+      background-size: 40px 40px;
+      /* bg-fixed ensures the grid stays put while content scrolls */
+      background-attachment: fixed;
+    }
+
+    .dark .bg-grid-pattern {
+      background-image: radial-gradient(rgba(0, 221, 179, 0.1) 1px, transparent 1px);
+    }
+
+    .scrollbar-hide::-webkit-scrollbar {
+      display: none;
+    }
+
+    .scrollbar-hide {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Custom Scrollbar for panels */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #94a3b8;
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #64748b;
+    }
+
+    /* Markdown Content Styles - Pro Typography - HIGH CONTRAST */
+    .markdown-content {
+      font-size: 0.95rem;
+      color: #002A53; /* Deep Navy for main text */
+    }
+
+    .dark .markdown-content {
+      color: #cbd5e1; /* slate-300 */
+    }
+
+    .markdown-content h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.6em;
+      font-weight: 700;
+      margin-top: 1.2em;
+      margin-bottom: 0.6em;
+      color: #002A53;
+      letter-spacing: -0.02em;
+    }
+
+    .markdown-content h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.3em;
+      font-weight: 600;
+      margin-top: 1.2em;
+      margin-bottom: 0.6em;
+      color: #009175;
+      letter-spacing: -0.01em;
+    }
+
+    .markdown-content h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.15em;
+      font-weight: 600;
+      margin-top: 1.2em;
+      margin-bottom: 0.5em;
+      color: #002A53;
+    }
+
+    .markdown-content p {
+      margin-bottom: 1em;
+      line-height: 1.7;
+      color: #1e293b; /* Slate-800 - Very Dark Grey for paragraph text */
+    }
+
+    .dark .markdown-content p {
+        color: #e2e8f0;
+    }
+
+    .markdown-content ul {
+      list-style-type: disc;
+      padding-left: 1.5em;
+      margin-bottom: 1em;
+      color: #1e293b;
+    }
+
+    .markdown-content ol {
+      list-style-type: decimal;
+      padding-left: 1.5em;
+      margin-bottom: 1em;
+      color: #1e293b;
+    }
+
+    .markdown-content li {
+      margin-bottom: 0.3em;
+      padding-left: 0.2em;
+      color: #1e293b;
+    }
+    
+    .dark .markdown-content li {
+      color: #e2e8f0;
+    }
+
+    .markdown-content blockquote {
+      border-left: 4px solid #00DDB3;
+      padding-left: 1em;
+      margin-left: 0;
+      font-style: italic;
+      color: #002A53;
+      margin-bottom: 1em;
+      background: #F0FDFA; /* Mint-50 */
+      padding-top: 0.75em;
+      padding-bottom: 0.75em;
+      padding-right: 0.75em;
+      border-radius: 0 8px 8px 0;
+    }
+
+    /* UPDATED: Strict Navy for Bold Text in Light Mode */
+    .markdown-content strong {
+      font-weight: 800;
+      color: #002A53 !important; /* Ampere Navy for bold text */
+    }
+
+    .dark .markdown-content strong {
+        color: #00DDB3 !important; /* Mint for dark mode */
+    }
+
+    .markdown-content code {
+      background-color: #f1f5f9;
+      padding: 0.1em 0.3em;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.9em;
+      color: #002A53;
+      border: 1px solid #e2e8f0;
+    }
+
+    .markdown-content pre {
+      background-color: #0f172a;
+      color: #e2e8f0;
+      padding: 1em;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin-bottom: 1em;
+      border: 1px solid #1e293b;
+    }
+
+    .markdown-content pre code {
+      background-color: transparent;
+      color: inherit;
+      padding: 0;
+      border: none;
+    }
+
+    /* Dark mode overrides */
+    @media (prefers-color-scheme: dark) {
+      .markdown-content h1 { color: #00DDB3; }
+      .markdown-content h2 { color: #99f6e4; }
+      .markdown-content h3 { color: #f1f5f9; }
+      .markdown-content blockquote {
+        background: #0B1120;
+        color: #e2e8f0;
+        border-color: #002A53;
+      }
+    }
+  </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "mammoth": "https://aistudiocdn.com/mammoth@^1.11.0",
+    "pdfjs-dist/": "https://aistudiocdn.com/pdfjs-dist@^5.4.394/",
+    "@vercel/node": "https://aistudiocdn.com/@vercel/node@^5.5.6",
+    "vitest/": "https://aistudiocdn.com/vitest@^4.0.10/",
+    "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.1.1",
+    "@testing-library/jest-dom": "https://aistudiocdn.com/@testing-library/jest-dom@^6.9.1",
+    "vitest": "https://aistudiocdn.com/vitest@^4.0.10",
+    "marked": "https://aistudiocdn.com/marked@^17.0.0",
+    "xlsx": "https://aistudiocdn.com/xlsx@^0.18.5",
+    "@supabase/supabase-js": "https://aistudiocdn.com/@supabase/supabase-js@^2.84.0",
+    "dotenv": "https://aistudiocdn.com/dotenv@^17.2.3",
+    "path": "https://aistudiocdn.com/path@^0.12.7",
+    "url": "https://aistudiocdn.com/url@^0.11.4",
+    "idb": "https://aistudiocdn.com/idb@^8.0.3"
+  }
+}
+</script>
+</head>
+
+<body
+  class="bg-slate-50 dark:bg-ampere-dark-bg text-slate-900 dark:text-slate-100 antialiased selection:bg-ampere-mint selection:text-ampere-navy bg-grid-pattern min-h-screen overflow-x-hidden relative bg-fixed">
+  
+  <!-- Fixed Background Gradient to prevent page extending past it -->
+  <div class="fixed inset-0 z-[-2] bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800"></div>
+
+  <!-- Dynamic Blobs Fixed Container -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none z-[-1]">
+      <div class="absolute top-0 left-0 -translate-x-1/4 -translate-y-1/4 w-[800px] h-[800px] bg-ampere-mint/10 rounded-full blur-[120px] animate-blob mix-blend-multiply dark:mix-blend-normal"></div>
+      <div class="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 w-[800px] h-[800px] bg-ampere-navy/5 rounded-full blur-[120px] animate-blob animation-delay-2000 mix-blend-multiply dark:mix-blend-normal"></div>
+      <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-400/10 rounded-full blur-[100px] animate-pulse-slow mix-blend-multiply dark:mix-blend-normal"></div>
+  </div>
+  
+  <div id="root" class="relative z-0"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+
+</html>

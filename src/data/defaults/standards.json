@@ -1,0 +1,208 @@
+[
+    {
+        "id": "vcs",
+        "name": "Verra - Verified Carbon Standard (VCS)",
+        "description": "The world's leading voluntary GHG program. It focuses on GHG reduction projects.",
+        "documents": [
+            {
+                "id": "vcs_doc_1",
+                "name": "General Requirements",
+                "applicability": "always",
+                "content": "\n- Project Description: Must be complete and publicly available.\n- Methodology: Must use an approved VCS methodology.\n- Additionality: Must demonstrate that the GHG reductions would not have occurred without the project.\n- Monitoring: A robust monitoring plan must be in place to collect data on GHG emissions.\n- Quantification: GHG emission reductions must be quantified using the chosen methodology.\n- Validation and Verification: An independent VVB must validate the project design and verify the emission reductions.\n        "
+            },
+            {
+                "id": "vcs_doc_2",
+                "name": "AFOLU Requirements",
+                "applicability": "sometimes",
+                "content": "\n- For Afforestation, Reforestation and Revegetation (ARR) projects, the land area must be eligible.\n- For projects avoiding unplanned deforestation (AUD), a historical reference period must be established.\n- Leakage must be accounted for in all Agriculture, Forestry, and Other Land Use projects.\n        "
+            }
+        ]
+    },
+    {
+        "id": "gold_standard",
+        "name": "Gold Standard for the Global Goals",
+        "description": "A standard for climate and development interventions to quantify, certify and maximise their impact.",
+        "documents": [
+            {
+                "id": "gs_doc_1",
+                "name": "Core Principles",
+                "applicability": "always",
+                "content": "\n- Contribution to Sustainable Development Goals (SDGs): Project must contribute to at least three SDGs.\n- Stakeholder Inclusivity: Must conduct inclusive stakeholder consultations.\n- Safeguarding Principles: Must adhere to environmental and social safeguarding principles.\n- Gender Equality: Must consider gender equality in project design and implementation.\n- Financial Additionality: Must prove the project is not business-as-usual.\n- Monitoring Plan: Must detail how climate and development impacts will be monitored.\n        "
+            }
+        ]
+    },
+    {
+        "id": "iso_14064_1",
+        "name": "ISO 14064-1:2018",
+        "description": "For quantifying and reporting GHG emissions and removals for organizations (GHG inventory).",
+        "documents": [
+            {
+                "id": "iso1_doc_1",
+                "name": "Organizational Boundaries",
+                "applicability": "always",
+                "content": "The organization shall establish and document its organizational boundaries, using either the equity share or control (financial or operational) approach."
+            },
+            {
+                "id": "iso1_doc_2",
+                "name": "Quantification of GHG Emissions",
+                "applicability": "always",
+                "content": "GHG emissions and removals shall be quantified using calculation-based or measurement-based methodologies. Emission factors used shall be sourced from national inventories, recognized international sources, or be site-specific."
+            },
+            {
+                "id": "iso1_doc_3",
+                "name": "GHG Report",
+                "applicability": "always",
+                "content": "The GHG report shall describe the quantification methodologies, emission factors, and data sources used. It must include separate quantification for direct emissions (Scope 1), indirect emissions from imported energy (Scope 2), and other indirect emissions (Scope 3)."
+            },
+            {
+                "id": "iso1_doc_4",
+                "name": "Base Year",
+                "applicability": "sometimes",
+                "content": "The organization shall establish a historical base year for GHG emissions and removals for the purpose of comparisons over time. A base year emissions recalculation policy must be established."
+            }
+        ]
+    },
+    {
+        "id": "iso_14064_2",
+        "name": "ISO 14064-2:2019",
+        "description": "For GHG projects, focusing on quantifying and monitoring emission reductions or removals.",
+        "documents": [
+            {
+                "id": "iso2_doc_1",
+                "name": "Project Description",
+                "applicability": "always",
+                "content": "The project shall be described, including its purpose, location, technologies used, and expected contribution to GHG emission reductions or removals."
+            },
+            {
+                "id": "iso2_doc_2",
+                "name": "Baseline Scenario",
+                "applicability": "always",
+                "content": "The baseline scenario shall be identified and described. It shall represent the GHG emissions and removals that would have occurred in the absence of the proposed GHG project."
+            },
+            {
+                "id": "iso2_doc_3",
+                "name": "Monitoring Plan",
+                "applicability": "always",
+                "content": "A monitoring plan shall be established to specify data to be collected, frequency of collection, and methodologies for measurement and calculation."
+            },
+            {
+                "id": "iso2_doc_4",
+                "name": "Leakage Assessment",
+                "applicability": "sometimes",
+                "content": "The project shall assess and account for GHG emission increases outside the project boundary that are a result of the project activity (leakage)."
+            }
+        ]
+    },
+    {
+        "id": "iso_14064_3",
+        "name": "ISO 14064-3:2019",
+        "description": "Guidance for the validation and verification of GHG statements, used by auditors.",
+        "documents": [
+            {
+                "id": "iso3_doc_1",
+                "name": "Level of Assurance",
+                "applicability": "always",
+                "content": "The intended user of the GHG statement shall determine the level of assurance required (reasonable or limited). The VVB's procedures will be based on this level."
+            },
+            {
+                "id": "iso3_doc_2",
+                "name": "Materiality",
+                "applicability": "always",
+                "content": "A quantitative materiality threshold shall be established by the VVB. Individual and aggregate errors or omissions that exceed this threshold are considered material."
+            },
+            {
+                "id": "iso3_doc_3",
+                "name": "Sufficient and Appropriate Evidence",
+                "applicability": "always",
+                "content": "The project proponent is responsible for providing the VVB with access to all necessary information and evidence required to support the GHG statement."
+            }
+        ]
+    },
+    {
+        "id": "cdm",
+        "name": "Clean Development Mechanism (CDM)",
+        "description": "A Kyoto Protocol mechanism allowing emission-reduction projects in developing countries to earn Certified Emission Reduction (CER) credits.",
+        "documents": [
+            {
+                "id": "cdm_doc_1",
+                "name": "Use of Approved Methodologies",
+                "applicability": "always",
+                "content": "The project activity shall apply a methodology approved by the CDM Executive Board. Any deviation requires prior approval."
+            },
+            {
+                "id": "cdm_doc_2",
+                "name": "Additionality",
+                "applicability": "always",
+                "content": "The project must demonstrate that the GHG reductions are additional to any that would occur in the absence of the certified project activity. This can be shown through investment analysis, barrier analysis, or common practice analysis."
+            },
+            {
+                "id": "cdm_doc_3",
+                "name": "Stakeholder Consultation",
+                "applicability": "always",
+                "content": "The project participants shall conduct a local stakeholder consultation and provide a summary of comments received and how due account was taken of them."
+            },
+            {
+                "id": "cdm_doc_4",
+                "name": "Small-Scale Projects",
+                "applicability": "sometimes",
+                "content": "Projects meeting the small-scale criteria (e.g., renewable energy projects up to 15 MW) may use simplified methodologies and procedures."
+            }
+        ]
+    },
+    {
+        "id": "article_6_4",
+        "name": "Article 6.4 Mechanism (Paris Agreement)",
+        "description": "A mechanism under the Paris Agreement for trading GHG emission reductions, building upon the experience of the CDM.",
+        "documents": [
+            {
+                "id": "a64_doc_1",
+                "name": "Contribution to Sustainable Development",
+                "applicability": "always",
+                "content": "The host Party must confirm that the activity contributes to its sustainable development. The project must report on its environmental and social impacts."
+            },
+            {
+                "id": "a64_doc_2",
+                "name": "Overall Mitigation in Global Emissions (OMGE)",
+                "applicability": "always",
+                "content": "A percentage of the A6.4ERs issued for the activity shall be cancelled at issuance to deliver an overall mitigation in global emissions."
+            },
+            {
+                "id": "a64_doc_3",
+                "name": "Corresponding Adjustments",
+                "applicability": "always",
+                "content": "The host Party shall apply corresponding adjustments for any A6.4ERs that are first transferred internationally to ensure the avoidance of double counting."
+            },
+            {
+                "id": "a64_doc_4",
+                "name": "Share of Proceeds for Adaptation",
+                "applicability": "always",
+                "content": "A levy of 5% of the A6.4ERs shall be collected at issuance to be remitted to the Adaptation Fund."
+            }
+        ]
+    },
+    {
+        "id": "corsia",
+        "name": "CORSIA",
+        "description": "Carbon Offsetting and Reduction Scheme for International Aviation, for verifying airline operators' emissions reports.",
+        "documents": [
+            {
+                "id": "corsia_doc_1",
+                "name": "Emissions Monitoring Plan (EMP)",
+                "applicability": "always",
+                "content": "The aeroplane operator shall develop and implement an Emissions Monitoring Plan (EMP) which must be approved by the State. The EMP must be consistent with Annex 16, Volume IV of the Chicago Convention."
+            },
+            {
+                "id": "corsia_doc_2",
+                "name": "Emissions Report Verification",
+                "applicability": "always",
+                "content": "The annual Emissions Report must be verified by an accredited third-party verification body. The verification must be conducted in accordance with ISO 14064-3 and the requirements of Annex 16, Volume IV."
+            },
+            {
+                "id": "corsia_doc_3",
+                "name": "Use of CORSIA Eligible Fuels",
+                "applicability": "sometimes",
+                "content": "If the operator claims emissions reductions from the use of CORSIA Eligible Fuels (CEF), they must provide evidence of the fuel's sustainability certification and chain of custody documentation."
+            }
+        ]
+    }
+]
