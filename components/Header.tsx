@@ -22,7 +22,7 @@ export const Header: React.FC<HeaderProps> = ({ isDeveloperMode, setIsDeveloperM
               Ampere
             </h1>
             <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-slate-200 group-hover:text-ampere-mint transition-colors duration-300 mt-1">
-              Carbon Audit AI
+              Carbon Audit Autopilot
             </span>
           </div>
         </div>

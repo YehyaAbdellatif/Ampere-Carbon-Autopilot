@@ -1,5 +1,5 @@
 {
-  "name": "Ampere Carbon Autopilot",
+  "name": "Ampere Carbon Audit Autopilot",
   "description": "A specialized Carbon Audit app to streamline the validation and verification process. It uses AI to draft findings, reports, and responses based on carbon audit standards and project documents.",
   "requestFramePermissions": []
 }
