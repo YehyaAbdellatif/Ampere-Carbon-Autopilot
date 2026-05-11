@@ -503,6 +503,7 @@ export const ProjectDashboard: React.FC<ProjectDashboardProps> = ({
             
             {/* Added PB-20 to ensure bottom spacing and corrected height issue */}
             {selectedSectionId && project.report[reportType][selectedSectionId] ? (
+                <>
                 <div className="bg-white dark:bg-slate-800 p-8 md:p-12 rounded-[2.5rem] shadow-navy border-x border-b border-slate-100 dark:border-slate-700 animate-slide-up border-t-4 border-t-ampere-navy min-h-[500px]">
                     <div className="flex justify-between items-start mb-8 pb-6 border-b border-slate-100 dark:border-slate-700">
                          <h2 className="text-2xl font-display font-bold text-slate-800 dark:text-white max-w-lg leading-tight">{activeTemplate?.sections.find(s => s.id === selectedSectionId)?.name}</h2>
@@ -548,6 +549,7 @@ export const ProjectDashboard: React.FC<ProjectDashboardProps> = ({
                         </button>
                     </div>
                 </div>
+                </>
             ) : (
                 <div className="h-full min-h-[400px] flex flex-col items-center justify-center border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-[2.5rem] bg-slate-50/30 dark:bg-slate-800/20 text-slate-400 p-12">
                      <svg className="w-16 h-16 text-slate-400 dark:text-slate-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
