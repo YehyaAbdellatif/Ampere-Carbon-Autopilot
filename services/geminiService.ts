@@ -1,8 +1,23 @@
 import { Finding, LibraryDocument, ProjectDocument, SamplingParameters } from '../types';
+import { compressionService } from './compressionService';
 
 export async function callApiStream(action: string, payload: any, onChunk: (chunk: string) => void) {
   try {
     console.log(`[GeminiService] Preparing prompt for action: ${action}`);
+
+    if (payload.documents) {
+      payload = { ...payload, documents: await compressionService.compressDocuments(payload.documents) };
+    }
+    if (payload.libraryDocs) {
+      payload = { ...payload, libraryDocs: await compressionService.compressLibraryDocs(payload.libraryDocs) };
+    }
+    if (payload.knowledgeBaseDocs) {
+      payload = { ...payload, knowledgeBaseDocs: await compressionService.compressLibraryDocs(payload.knowledgeBaseDocs) };
+    }
+    if (payload.requirementsText) {
+      payload = { ...payload, requirementsText: compressionService.cleanRequirements(payload.requirementsText) };
+    }
+
     const { prompt } = getPromptAndConfig(action, payload);
     const systemInstruction = getBaseSystemInstruction(action, payload.projectMode);
 
