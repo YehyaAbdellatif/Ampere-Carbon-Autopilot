@@ -18,7 +18,8 @@ export async function callApiStream(action: string, payload: any, onChunk: (chun
       payload = { ...payload, requirementsText: compressionService.cleanRequirements(payload.requirementsText) };
     }
 
-    const { prompt } = getPromptAndConfig(action, payload);
+    const { prompt: rawPrompt } = getPromptAndConfig(action, payload);
+    const prompt = compressionService.enforcePromptLimit(rawPrompt);
     const systemInstruction = getBaseSystemInstruction(action, payload.projectMode);
 
     const response = await fetch('/api/gemini', {
