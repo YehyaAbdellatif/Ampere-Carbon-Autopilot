@@ -9,7 +9,7 @@ import { StandardSelector } from './components/StandardSelector';
 import { DocumentManager } from './components/DocumentManager';
 import { ProjectDashboard } from './components/ProjectDashboard';
 import { DeveloperModeDashboard } from './components/DeveloperModeDashboard';
-import { Toast } from './components/Toast';
+
 
 
 const App: React.FC = () => {
@@ -315,22 +315,13 @@ const App: React.FC = () => {
             )}
 
             {isDeveloperMode ? (
-                <DeveloperModeDashboard 
+                <DeveloperModeDashboard
                     standards={standards}
                     setStandards={setStandards}
                     libraryDocuments={libraryDocuments}
                     setLibraryDocuments={setLibraryDocuments}
                     mainGoverningRequirements={mainGoverningRequirements}
                     setMainGoverningRequirements={setMainGoverningRequirements}
-                    onAddNewStandard={(name, description) => {
-                        const newStandard: Standard = {
-                            id: `std_${Date.now()}`,
-                            name,
-                            description,
-                            documents: []
-                        };
-                        setStandards([...standards, newStandard]);
-                    }}
                 />
             ) : !project ? (
                 <div className="max-w-6xl mx-auto animate-fade-in">
@@ -398,7 +389,6 @@ const App: React.FC = () => {
                 />
             )}
         </main>
-        <Toast message={null} onClose={() => {}} />
     </div>
   );
 };

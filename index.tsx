@@ -87,13 +87,20 @@ try {
   // Show error on page if React fails to initialize
   const rootElement = document.getElementById('root');
   if (rootElement) {
-    rootElement.innerHTML = `
-      <div style="padding: 2rem; font-family: system-ui; max-width: 800px; margin: 2rem auto; background: #fee2e2; border-radius: 8px;">
-        <h1 style="color: #dc2626;">⛔ Fatal Initialization Error</h1>
-        <p><strong>The application failed to initialize.</strong></p>
-        <p>Error: ${error instanceof Error ? error.message : String(error)}</p>
-        <p style="margin-top: 1rem;"><strong>Check the browser console (F12) for details.</strong></p>
-      </div>
-    `;
+    const errorDiv = document.createElement('div');
+    errorDiv.style.cssText = 'padding: 2rem; font-family: system-ui; max-width: 800px; margin: 2rem auto; background: #fee2e2; border-radius: 8px;';
+    const h1 = document.createElement('h1');
+    h1.style.color = '#dc2626';
+    h1.textContent = 'Fatal Initialization Error';
+    const p1 = document.createElement('p');
+    p1.innerHTML = '<strong>The application failed to initialize.</strong>';
+    const p2 = document.createElement('p');
+    p2.textContent = `Error: ${error instanceof Error ? error.message : String(error)}`;
+    const p3 = document.createElement('p');
+    p3.style.marginTop = '1rem';
+    p3.innerHTML = '<strong>Check the browser console (F12) for details.</strong>';
+    errorDiv.append(h1, p1, p2, p3);
+    rootElement.innerHTML = '';
+    rootElement.appendChild(errorDiv);
   }
 }

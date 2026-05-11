@@ -134,7 +134,6 @@ interface DeveloperModeDashboardProps {
     setLibraryDocuments: React.Dispatch<React.SetStateAction<LibraryDocument[]>>;
     mainGoverningRequirements: Standard;
     setMainGoverningRequirements: React.Dispatch<React.SetStateAction<Standard>>;
-    onAddNewStandard: (name: string, description: string) => void;
 }
 
 const exampleCategories = [
@@ -149,8 +148,7 @@ const exampleCategories = [
 export const DeveloperModeDashboard: React.FC<DeveloperModeDashboardProps> = ({
     standards, setStandards,
     libraryDocuments, setLibraryDocuments,
-    mainGoverningRequirements, setMainGoverningRequirements,
-    onAddNewStandard
+    mainGoverningRequirements, setMainGoverningRequirements
 }) => {
     const [modalContent, setModalContent] = useState<React.ReactNode | null>(null);
 
@@ -201,24 +199,13 @@ export const DeveloperModeDashboard: React.FC<DeveloperModeDashboardProps> = ({
 
     // --- Standard Management ---
     const handleAddNewStandard = async (name: string, description: string) => {
-        // Create object and state update via callback
-        onAddNewStandard(name, description);
-        
-        // Also construct manually to save to DB (since onAddNewStandard doesn't return the ID)
-        // Ideally we refactor onAddNewStandard, but here we can just do a small hack or best effort
-        // or just construct it here fully.
-        // Let's modify onAddNewStandard in App to return ID or handle saving?
-        // App.tsx uses Date.now().
-        
-        // BETTER: Construct here and pass to parent
         const newStandard: Standard = {
             id: `std_${Date.now()}`,
             name,
             description,
             documents: []
         };
-        
-        // We override the parent callback usage slightly to ensure we have the object to save
+
         setStandards(prev => [...prev, newStandard]);
         await dbService.saveStandard(newStandard);
 

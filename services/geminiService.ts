@@ -204,11 +204,16 @@ const getSamplingPlanPrompt = (payload: {
     standardName: string;
     documents: ProjectDocument[];
     findings: Finding[];
-    samplingParams: SamplingParameters;
+    criteria?: SamplingParameters;
+    samplingParams?: SamplingParameters;
     previousPlan?: string;
     correction?: string;
 }): string => {
-    const { standardName, documents, findings, samplingParams, previousPlan, correction } = payload;
+    const { standardName, documents, findings, previousPlan, correction } = payload;
+    const samplingParams = payload.criteria || payload.samplingParams;
+    if (!samplingParams) {
+        throw new Error('Sampling parameters are required (pass as "criteria" or "samplingParams").');
+    }
     
     const docsContent = documents.map((doc) => `"${doc.name}"`).join(', ');
 
