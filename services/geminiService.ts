@@ -1,72 +1,58 @@
-import { GoogleGenAI, GenerateContentResponse } from "@google/genai";
 import { Finding, LibraryDocument, ProjectDocument, SamplingParameters } from '../types';
 
-// --- MODEL CONFIGURATION ---
-
-// Strictly use Gemini 3 Pro Preview as requested.
-const AUTHOR_MODEL_HIERARCHY = [
-  'gemini-3-pro-preview'
-];
-
 export async function callApiStream(action: string, payload: any, onChunk: (chunk: string) => void) {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
   try {
-    // --- Direct Generation Path ---
-    // We are sending the raw prompt directly to the Author model.
-
     console.log(`[GeminiService] Preparing prompt for action: ${action}`);
     const { prompt } = getPromptAndConfig(action, payload);
     const systemInstruction = getBaseSystemInstruction(action, payload.projectMode);
 
-    let lastError: Error | null = null;
-    let success = false;
+    const response = await fetch('/api/gemini', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'generate',
+        payload: { systemInstruction, prompt },
+      }),
+    });
 
-    // Iterate through models (now only one)
-    for (const model of AUTHOR_MODEL_HIERARCHY) {
-        if (success) break;
-        
-        try {
-            console.log(`[GeminiService] Attempting generation with model: ${model}`);
-            
-            // Use standard "user" role structure for maximum compatibility
-            const stream = await ai.models.generateContentStream({
-                model: model,
-                contents: [{ role: 'user', parts: [{ text: prompt }] }], 
-                config: {
-                    systemInstruction
-                }
-            });
-
-            let hasResponse = false;
-
-            // Iterate stream
-            for await (const chunk of stream) {
-                const c = chunk as GenerateContentResponse;
-                if (c.text) {
-                    hasResponse = true;
-                    onChunk(c.text);
-                }
-            }
-
-            if (!hasResponse) {
-                // This handles cases where the model returns "finishReason" (e.g. SAFETY) 
-                // without any text content.
-                throw new Error(`Model ${model} completed stream but returned no text content (possibly blocked).`);
-            }
-
-            console.log(`[GeminiService] Success with model: ${model}`);
-            success = true;
-            return; 
-
-        } catch (error: any) {
-            console.warn(`Model ${model} failed.`, error);
-            lastError = error;
-            // Continue to next model in hierarchy (if any)
-        }
+    if (!response.ok) {
+      const errData = await response.json().catch(() => ({ error: response.statusText }));
+      throw new Error(errData.error || `API error: ${response.status}`);
     }
 
-    throw lastError || new Error('All AI models failed to generate content.');
+    const reader = response.body?.getReader();
+    if (!reader) throw new Error('No response stream available');
+
+    const decoder = new TextDecoder();
+    let hasResponse = false;
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      const chunk = decoder.decode(value, { stream: true });
+      const lines = chunk.split('\n');
+
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        const data = line.slice(6).trim();
+        if (data === '[DONE]') continue;
+        try {
+          const parsed = JSON.parse(data);
+          const text = parsed.choices?.[0]?.delta?.content;
+          if (text) {
+            hasResponse = true;
+            onChunk(text);
+          }
+        } catch {
+          // partial JSON line, skip
+        }
+      }
+    }
+
+    if (!hasResponse) {
+      throw new Error('AI returned no content (possibly blocked or empty response).');
+    }
 
   } catch (error: any) {
     console.error(`Streaming AI call for action '${action}' failed:`, error);

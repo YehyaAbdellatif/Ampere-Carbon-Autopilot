@@ -10,7 +10,6 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@google/genai": "^1.15.0",
     "@vercel/node": "^5.3.13",
     "dotenv": "^17.2.3",
     "idb": "^8.0.0",
