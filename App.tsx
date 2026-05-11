@@ -1,9 +1,10 @@
 
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { Standard, ProjectDocument, Project, StandardDocument, ReportTemplate, LibraryDocument, ActiveAction, Finding } from './types';
 import { INITIAL_MAIN_GOVERNING_REQUIREMENTS } from './src/data/defaults';
 import { callApiStream } from './services/geminiService';
 import { dataService } from './services/dataService';
+import { dbService } from './services/db';
 import { Header } from './components/Header';
 import { StandardSelector } from './components/StandardSelector';
 import { DocumentManager } from './components/DocumentManager';
@@ -47,6 +48,18 @@ const App: React.FC = () => {
         const fetchedTemplates = await dataService.getReportTemplates();
         setReportTemplates(fetchedTemplates);
 
+        // Restore saved project if one exists
+        const savedProjects = await dbService.getAllProjects();
+        if (savedProjects.length > 0) {
+          const savedProject = savedProjects[savedProjects.length - 1];
+          setProject(savedProject);
+          setProjectMode(savedProject.projectMode);
+          setSelectedStandard(savedProject.selectedStandard);
+          setSelectedOptionalDocs(savedProject.selectedOptionalDocuments);
+          setSelectedGoverningDocs(savedProject.selectedGoverningDocuments);
+          setDocuments(savedProject.documents);
+        }
+
       } catch (e) {
         console.error("Failed to load data", e);
         setError("Failed to load application data. Using defaults.");
@@ -57,6 +70,28 @@ const App: React.FC = () => {
 
     loadData();
   }, []);
+
+  // Auto-save project to IndexedDB with 500ms debounce
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => {
+    if (saveTimerRef.current) {
+      clearTimeout(saveTimerRef.current);
+    }
+
+    saveTimerRef.current = setTimeout(() => {
+      if (project) {
+        dbService.saveProject(project).catch((err) =>
+          console.error('Failed to auto-save project:', err)
+        );
+      }
+    }, 500);
+
+    return () => {
+      if (saveTimerRef.current) {
+        clearTimeout(saveTimerRef.current);
+      }
+    };
+  }, [project]);
 
   // Logic to enforce VVM manuals based on audit scope
   const handleProjectModeChange = (mode: string, isInitialSetup: boolean = false) => {
@@ -138,6 +173,8 @@ const App: React.FC = () => {
     if (!project) return;
     setActiveAction(action);
     setError(null);
+
+    const projectSnapshot = project ? { ...project } : null;
 
     const getRequirementsText = () => {
       const standardAlways = project.selectedStandard.documents.filter(d => d.applicability === 'always');
@@ -293,6 +330,7 @@ const App: React.FC = () => {
       }
     } catch (err: any) {
         console.error('Error executing action:', err);
+        setProject(projectSnapshot);
         setError(err.message || "An error occurred during AI processing.");
     } finally {
         setActiveAction(null);
@@ -382,7 +420,14 @@ const App: React.FC = () => {
                     project={project}
                     reportTemplates={reportTemplates}
                     onRunAction={handleRunAction}
-                    onReset={() => setProject(null)}
+                    onReset={() => {
+                      if (project) {
+                        dbService.deleteProject(project.id).catch((err) =>
+                          console.error('Failed to delete project from DB:', err)
+                        );
+                      }
+                      setProject(null);
+                    }}
                     activeAction={activeAction}
                     onProjectModeChange={handleProjectModeChange}
                     onDeleteFinding={handleDeleteFinding}
