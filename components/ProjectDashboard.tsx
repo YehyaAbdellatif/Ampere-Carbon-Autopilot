@@ -40,6 +40,16 @@ export const ProjectDashboard: React.FC<ProjectDashboardProps> = ({
 
   // Sampling State
   const [samplingContext, setSamplingContext] = useState('');
+  const [samplingApproach, setSamplingApproach] = useState<'acceptance' | 'estimation'>('acceptance');
+  const [samplingMethod, setSamplingMethod] = useState<string>('simple_random');
+  const [populationSize, setPopulationSize] = useState<string>('');
+  const [samplingAql, setSamplingAql] = useState<string>('0.5%');
+  const [samplingUql, setSamplingUql] = useState<string>('10%');
+  const [producerRisk, setProducerRisk] = useState<string>('5%');
+  const [consumerRisk, setConsumerRisk] = useState<string>('10%');
+  const [samplingConfidence, setSamplingConfidence] = useState<string>('95%');
+  const [samplingPrecision, setSamplingPrecision] = useState<string>('10%');
+  const [samplingSeed, setSamplingSeed] = useState<string>('42');
   
   const activeTemplate = reportTemplates.find(t => t.id === `${reportType}_report`);
 
@@ -173,24 +183,140 @@ export const ProjectDashboard: React.FC<ProjectDashboardProps> = ({
                         className="w-full p-4 rounded-2xl bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm focus:ring-2 focus:ring-ampere-mint outline-none h-40 resize-none placeholder-slate-500 text-slate-900 dark:text-white"
                     />
                 </div>
-                <div className="flex flex-col justify-end">
-                     <div className="bg-slate-50 dark:bg-slate-900/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 mb-4">
-                        <p className="text-xs text-slate-500 mb-2 font-mono font-bold">CONFIGURATION</p>
-                        <div className="flex flex-wrap gap-2 text-xs font-medium text-slate-700 dark:text-slate-300">
-                             <span className="bg-white dark:bg-slate-800 px-2 py-1 rounded border border-slate-200 dark:border-slate-600">Approach: Acceptance Sampling</span>
-                             <span className="bg-white dark:bg-slate-800 px-2 py-1 rounded border border-slate-200 dark:border-slate-600">Method: Simple Random</span>
-                             <span className="bg-white dark:bg-slate-800 px-2 py-1 rounded border border-slate-200 dark:border-slate-600">Confidence: 95%</span>
+                <div className="flex flex-col justify-between">
+                     <div className="bg-slate-50 dark:bg-slate-900/50 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 mb-4 space-y-4">
+                        <p className="text-xs text-slate-500 font-mono font-bold">CONFIGURATION</p>
+                        <div className="grid grid-cols-2 gap-3">
+                            <div>
+                                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Approach</label>
+                                <div className="relative">
+                                    <select
+                                        value={samplingApproach}
+                                        onChange={(e) => setSamplingApproach(e.target.value as 'acceptance' | 'estimation')}
+                                        className="w-full p-2.5 pr-8 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-xs appearance-none outline-none focus:border-ampere-mint text-slate-900 dark:text-white font-medium"
+                                    >
+                                        <option value="acceptance">Acceptance</option>
+                                        <option value="estimation">Estimation</option>
+                                    </select>
+                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-500"><svg className="h-3 w-3 fill-current" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg></div>
+                                </div>
+                            </div>
+                            <div>
+                                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Method</label>
+                                <div className="relative">
+                                    <select
+                                        value={samplingMethod}
+                                        onChange={(e) => setSamplingMethod(e.target.value)}
+                                        className="w-full p-2.5 pr-8 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-xs appearance-none outline-none focus:border-ampere-mint text-slate-900 dark:text-white font-medium"
+                                    >
+                                        <option value="simple_random">Simple Random</option>
+                                        <option value="stratified">Stratified</option>
+                                        <option value="systematic">Systematic</option>
+                                        <option value="cluster_single">Cluster (Single)</option>
+                                        <option value="cluster_multi">Cluster (Multi)</option>
+                                    </select>
+                                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-500"><svg className="h-3 w-3 fill-current" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg></div>
+                                </div>
+                            </div>
+                            <div>
+                                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Population Size</label>
+                                <input
+                                    type="text"
+                                    value={populationSize}
+                                    onChange={(e) => setPopulationSize(e.target.value)}
+                                    placeholder="e.g. 5000"
+                                    className="w-full p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-xs outline-none focus:border-ampere-mint placeholder-slate-400 text-slate-900 dark:text-white font-medium"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Random Seed</label>
+                                <input
+                                    type="text"
+                                    value={samplingSeed}
+                                    onChange={(e) => setSamplingSeed(e.target.value)}
+                                    placeholder="e.g. 42"
+                                    className="w-full p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-xs outline-none focus:border-ampere-mint placeholder-slate-400 text-slate-900 dark:text-white font-medium"
+                                />
+                            </div>
                         </div>
+
+                        {samplingApproach === 'acceptance' && (
+                            <div className="grid grid-cols-2 gap-3 pt-2 border-t border-slate-200 dark:border-slate-700">
+                                <div>
+                                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">AQL</label>
+                                    <input
+                                        type="text"
+                                        value={samplingAql}
+                                        onChange={(e) => setSamplingAql(e.target.value)}
+                                        className="w-full p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-xs outline-none focus:border-ampere-mint text-slate-900 dark:text-white font-medium"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">UQL</label>
+                                    <input
+                                        type="text"
+                                        value={samplingUql}
+                                        onChange={(e) => setSamplingUql(e.target.value)}
+                                        className="w-full p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-xs outline-none focus:border-ampere-mint text-slate-900 dark:text-white font-medium"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Producer Risk</label>
+                                    <input
+                                        type="text"
+                                        value={producerRisk}
+                                        onChange={(e) => setProducerRisk(e.target.value)}
+                                        className="w-full p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-xs outline-none focus:border-ampere-mint text-slate-900 dark:text-white font-medium"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Consumer Risk</label>
+                                    <input
+                                        type="text"
+                                        value={consumerRisk}
+                                        onChange={(e) => setConsumerRisk(e.target.value)}
+                                        className="w-full p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-xs outline-none focus:border-ampere-mint text-slate-900 dark:text-white font-medium"
+                                    />
+                                </div>
+                            </div>
+                        )}
+
+                        {samplingApproach === 'estimation' && (
+                            <div className="grid grid-cols-2 gap-3 pt-2 border-t border-slate-200 dark:border-slate-700">
+                                <div>
+                                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Confidence</label>
+                                    <input
+                                        type="text"
+                                        value={samplingConfidence}
+                                        onChange={(e) => setSamplingConfidence(e.target.value)}
+                                        className="w-full p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-xs outline-none focus:border-ampere-mint text-slate-900 dark:text-white font-medium"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Precision</label>
+                                    <input
+                                        type="text"
+                                        value={samplingPrecision}
+                                        onChange={(e) => setSamplingPrecision(e.target.value)}
+                                        className="w-full p-2.5 rounded-xl bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-xs outline-none focus:border-ampere-mint text-slate-900 dark:text-white font-medium"
+                                    />
+                                </div>
+                            </div>
+                        )}
                      </div>
                      <button
-                        onClick={() => handleAction('generateSamplingPlan', { 
-                            criteria: { 
-                                approach: 'acceptance', 
-                                method: 'simple_random', 
-                                populationSize: 'Unknown', 
-                                aql: '0.5%', uql: '10%', producerRisk: '5%', consumerRisk: '10%',
-                                additionalContext: samplingContext 
-                            } 
+                        onClick={() => handleAction('generateSamplingPlan', {
+                            criteria: {
+                                approach: samplingApproach,
+                                method: samplingMethod,
+                                populationSize: populationSize || 'Unknown',
+                                aql: samplingAql, uql: samplingUql,
+                                producerRisk, consumerRisk,
+                                confidence: samplingConfidence,
+                                precision: samplingPrecision,
+                                seed: samplingSeed,
+                                additionalContext: samplingContext
+                            }
                         })}
                         disabled={!!activeAction}
                         className="w-full bg-ampere-navy dark:bg-white text-white dark:text-ampere-navy px-6 py-4 rounded-xl font-bold text-sm hover:shadow-navy-lg transition-all duration-300 disabled:opacity-50"

@@ -155,16 +155,24 @@ const getPromptAndConfig = (action: string, payload: any) => {
 
 // --- Prompt Getters ---
 
+const formatExamples = (docs: LibraryDocument[], label: string): string => {
+    if (!docs || docs.length === 0) return '';
+    return `\n\n**${label}:**\n${docs.map(d => `--- ${d.name} ---\n${d.content}`).join('\n\n')}\n`;
+};
+
 const getFindingsPrompt = (payload: {
     standardName: string,
     requirementsText: string,
     documents: ProjectDocument[],
+    libraryDocs?: LibraryDocument[],
     previousFindings?: Finding[],
     correction?: string
 }): string => {
-    const { standardName, requirementsText, documents, previousFindings, correction } = payload;
+    const { standardName, requirementsText, documents, libraryDocs, previousFindings, correction } = payload;
     const docsText = documents.map((doc) => `\n--- Document: ${doc.name} ---\n${doc.content}`).join('\n');
     const delimiter = '<END_OF_FINDING>';
+
+    const examplesBlock = formatExamples(libraryDocs || [], 'Example Findings (match this format and quality)');
 
     let prompt = `
       Review the provided project context against the requirements of the selected standard. Identify any gaps, inconsistencies, or areas needing clarification.
@@ -176,7 +184,7 @@ const getFindingsPrompt = (payload: {
 
       **Project Context / Evidence:**
       ${docsText}
-
+      ${examplesBlock}
       Based on your review, generate a series of findings.
       
       **Output Format Rules:**
@@ -270,10 +278,11 @@ const getReportSectionPrompt = (payload: {
     documents: ProjectDocument[],
     userInput: { assessment: string; opinion: string },
     sectionTemplate: string,
+    libraryDocs?: LibraryDocument[],
     previousContent?: string,
     correction?: string,
 }): string => {
-    const { standardName, documents, userInput, sectionTemplate, previousContent, correction } = payload;
+    const { standardName, documents, userInput, sectionTemplate, libraryDocs, previousContent, correction } = payload;
     
     const docsContent = documents.map((doc) => `\n--- ${doc.name} ---\n${doc.content}`).join('\n');
     
@@ -284,14 +293,16 @@ const getReportSectionPrompt = (payload: {
             .replace(/{{opinion}}/g, userInput.opinion || '');
     }
 
+    const examplesBlock = formatExamples(libraryDocs || [], 'Example Report Sections (match this style and quality)');
+
     let prompt = `
       Draft the content for the following section of a Report.
       Use the provided project details and user inputs to generate a professional, detailed, and accurate section.
-      
+
       **Project Standard:** ${standardName}
-      **Project Context/Evidence:** 
+      **Project Context/Evidence:**
       ${docsContent}
-      
+      ${examplesBlock}
       **Section to Draft:**
       ---
       ${filledTemplate}
@@ -315,11 +326,12 @@ const getResponsePrompt = (payload: {
     receivedComment: string,
     projectContext: string,
     responseType: 'finding' | 'registry' | 'technical',
+    libraryDocs?: LibraryDocument[],
     previousResponse?: string,
     correction?: string,
     documents?: ProjectDocument[]
 }): string => {
-    const { receivedComment, projectContext, responseType, previousResponse, correction } = payload;
+    const { receivedComment, projectContext, responseType, libraryDocs, previousResponse, correction } = payload;
     
     const personaDetail = {
         finding: 'Draft a response to a project proponent about a finding that was raised.',
@@ -327,15 +339,17 @@ const getResponsePrompt = (payload: {
         technical: 'Draft a clear and precise response to a detailed query from a third-party technical reviewer.'
     }[responseType] || 'Draft a professional response.';
 
+    const examplesBlock = formatExamples(libraryDocs || [], 'Example Responses (match this tone and quality)');
+
     let prompt = `
       ${personaDetail}
-      
+
       **Project Context:**
       ${projectContext}
-      
+      ${examplesBlock}
       **Comment Received:**
       "${receivedComment}"
-      
+
       Address the points raised directly, referencing the project context and maintaining a collaborative tone.
     `;
 

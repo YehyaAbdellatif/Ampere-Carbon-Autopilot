@@ -1,5 +1,5 @@
 import { openDB, DBSchema } from 'idb';
-import { Standard, LibraryDocument, ReportTemplate } from '../types';
+import { Standard, LibraryDocument, ReportTemplate, Project } from '../types';
 import { INITIAL_STANDARDS, INITIAL_LIBRARY_DOCUMENTS, INITIAL_MAIN_GOVERNING_REQUIREMENTS, INITIAL_REPORT_TEMPLATES } from '../src/data/defaults';
 
 interface AmpereDB extends DBSchema {
@@ -19,11 +19,15 @@ interface AmpereDB extends DBSchema {
   templates: {
     key: string;
     value: ReportTemplate;
-  }
+  };
+  projects: {
+    key: string;
+    value: Project;
+  };
 }
 
 const DB_NAME = 'ampere-db';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 
 let dbInstance: Awaited<ReturnType<typeof openDB<AmpereDB>>> | null = null;
 
@@ -44,6 +48,9 @@ export const initDB = async () => {
       }
       if (!db.objectStoreNames.contains('templates')) {
         db.createObjectStore('templates', { keyPath: 'id' });
+      }
+      if (!db.objectStoreNames.contains('projects')) {
+        db.createObjectStore('projects', { keyPath: 'id' });
       }
     },
   });
@@ -113,5 +120,25 @@ export const dbService = {
   async getReportTemplates(): Promise<ReportTemplate[]> {
     const db = await initDB();
     return db.getAll('templates');
-  }
+  },
+
+  async saveProject(project: Project): Promise<string> {
+    const db = await initDB();
+    return db.put('projects', project);
+  },
+
+  async getProject(id: string): Promise<Project | undefined> {
+    const db = await initDB();
+    return db.get('projects', id);
+  },
+
+  async deleteProject(id: string): Promise<void> {
+    const db = await initDB();
+    return db.delete('projects', id);
+  },
+
+  async getAllProjects(): Promise<Project[]> {
+    const db = await initDB();
+    return db.getAll('projects');
+  },
 };
