@@ -1,9 +1,37 @@
 import { Finding, LibraryDocument, ProjectDocument, SamplingParameters } from '../types';
 
+const MAX_DOC_CHARS = 15000;
+const MAX_PROMPT_CHARS = 150000;
+
+function truncateText(text: string, maxChars: number): string {
+  if (text.length <= maxChars) return text;
+  return text.substring(0, maxChars) + '\n\n[... content truncated for length ...]';
+}
+
+function truncateDocs(docs: ProjectDocument[]): ProjectDocument[] {
+  return docs.map(d => ({ ...d, content: truncateText(d.content, MAX_DOC_CHARS) }));
+}
+
+function truncateLibDocs(docs: LibraryDocument[]): LibraryDocument[] {
+  return docs.map(d => ({ ...d, content: truncateText(d.content, MAX_DOC_CHARS) }));
+}
+
 export async function callApiStream(action: string, payload: any, onChunk: (chunk: string) => void) {
   try {
     console.log(`[GeminiService] Preparing prompt for action: ${action}`);
-    const { prompt } = getPromptAndConfig(action, payload);
+
+    if (payload.documents) {
+      payload = { ...payload, documents: truncateDocs(payload.documents) };
+    }
+    if (payload.libraryDocs) {
+      payload = { ...payload, libraryDocs: truncateLibDocs(payload.libraryDocs) };
+    }
+    if (payload.knowledgeBaseDocs) {
+      payload = { ...payload, knowledgeBaseDocs: truncateLibDocs(payload.knowledgeBaseDocs) };
+    }
+
+    const { prompt: rawPrompt } = getPromptAndConfig(action, payload);
+    const prompt = truncateText(rawPrompt, MAX_PROMPT_CHARS);
     const systemInstruction = getBaseSystemInstruction(action, payload.projectMode);
 
     const response = await fetch('/api/gemini', {
@@ -158,7 +186,8 @@ const getFindingsPrompt = (payload: {
     previousFindings?: Finding[],
     correction?: string
 }): string => {
-    const { standardName, requirementsText, documents, libraryDocs, previousFindings, correction } = payload;
+    const { standardName, documents, libraryDocs, previousFindings, correction } = payload;
+    const requirementsText = truncateText(payload.requirementsText || '', 30000);
     const docsText = documents.map((doc) => `\n--- Document: ${doc.name} ---\n${doc.content}`).join('\n');
     const delimiter = '<END_OF_FINDING>';
 
