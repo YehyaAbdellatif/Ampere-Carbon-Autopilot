@@ -174,6 +174,8 @@ const App: React.FC = () => {
     setActiveAction(action);
     setError(null);
 
+    const projectSnapshot = project ? { ...project } : null;
+
     const getRequirementsText = () => {
       const standardAlways = project.selectedStandard.documents.filter(d => d.applicability === 'always');
       const governingAlways = mainGoverningRequirements.documents.filter(d => d.applicability === 'always');
@@ -328,6 +330,7 @@ const App: React.FC = () => {
       }
     } catch (err: any) {
         console.error('Error executing action:', err);
+        setProject(projectSnapshot);
         setError(err.message || "An error occurred during AI processing.");
     } finally {
         setActiveAction(null);

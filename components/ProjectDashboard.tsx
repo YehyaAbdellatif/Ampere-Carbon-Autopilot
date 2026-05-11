@@ -30,7 +30,7 @@ export const ProjectDashboard: React.FC<ProjectDashboardProps> = ({
   const [correctionInput, setCorrectionInput] = useState('');
   
   // Report State
-  const [reportType, setReportType] = useState<'validation' | 'verification'>('validation');
+  const [reportType, setReportType] = useState<'validation' | 'verification' | 'ghg_inventory' | 'corsia'>('validation');
   const [selectedSectionId, setSelectedSectionId] = useState<string>('');
   const [reportAssessment, setReportAssessment] = useState('');
   const [reportOpinion, setReportOpinion] = useState('');
@@ -418,6 +418,8 @@ export const ProjectDashboard: React.FC<ProjectDashboardProps> = ({
                             >
                                 <option value="validation">Validation Report</option>
                                 <option value="verification">Verification Report</option>
+                                <option value="ghg_inventory">GHG Inventory Report</option>
+                                <option value="corsia">CORSIA Report</option>
                             </select>
                             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500"><svg className="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg></div>
                         </div>
@@ -508,6 +510,34 @@ export const ProjectDashboard: React.FC<ProjectDashboardProps> = ({
                     </div>
                     <div className="prose prose-slate dark:prose-invert max-w-none">
                         <MarkdownRenderer content={project.report[reportType][selectedSectionId]} />
+                    </div>
+
+                    <div className="mt-10 pt-8 border-t border-slate-200 dark:border-slate-700">
+                        <p className="text-sm font-bold text-slate-700 dark:text-slate-300 mb-3">Refine This Section</p>
+                        <div className="flex gap-3">
+                            <input
+                                type="text"
+                                value={correctionInput}
+                                onChange={(e) => setCorrectionInput(e.target.value)}
+                                placeholder="E.g., 'Add more detail on methodology' or 'Make the tone more formal'..."
+                                className="flex-grow p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm focus:ring-2 focus:ring-ampere-mint outline-none placeholder-slate-500 text-slate-900 dark:text-white"
+                            />
+                            <button
+                                onClick={() => {
+                                    const section = activeTemplate?.sections.find(s => s.id === selectedSectionId);
+                                    if (section) handleAction(`refine-report-section-${selectedSectionId}`, {
+                                        section,
+                                        reportType,
+                                        inputs: { assessment: reportAssessment, opinion: reportOpinion },
+                                        correction: correctionInput
+                                    });
+                                }}
+                                disabled={!!activeAction || !correctionInput.trim()}
+                                className="px-6 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl text-sm font-bold hover:shadow-lg transition-all disabled:opacity-50"
+                            >
+                                Refine
+                            </button>
+                        </div>
                     </div>
                 </div>
             ) : (
