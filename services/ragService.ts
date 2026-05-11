@@ -55,7 +55,9 @@ export const ragService = {
             normA += vecA[i] * vecA[i];
             normB += vecB[i] * vecB[i];
         }
-        return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
+        const denominator = Math.sqrt(normA) * Math.sqrt(normB);
+        if (denominator === 0) return 0;
+        return dotProduct / denominator;
     },
 
     /**

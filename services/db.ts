@@ -25,7 +25,11 @@ interface AmpereDB extends DBSchema {
 const DB_NAME = 'ampere-db';
 const DB_VERSION = 1;
 
+let dbInstance: Awaited<ReturnType<typeof openDB<AmpereDB>>> | null = null;
+
 export const initDB = async () => {
+  if (dbInstance) return dbInstance;
+
   const db = await openDB<AmpereDB>(DB_NAME, DB_VERSION, {
     upgrade(db) {
       if (!db.objectStoreNames.contains('standards')) {
@@ -63,6 +67,7 @@ export const initDB = async () => {
     await tx.done;
   }
 
+  dbInstance = db;
   return db;
 };
 

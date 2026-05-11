@@ -422,7 +422,7 @@ export const ProjectDashboard: React.FC<ProjectDashboardProps> = ({
                 </div>
                 <div className="flex justify-end mt-6">
                     <button
-                        onClick={() => handleAction('response-gen', { type: responseType, comment: responseComment })}
+                        onClick={() => handleAction(`response-${responseType}`, { type: responseType, comment: responseComment })}
                         disabled={!responseComment || !!activeAction}
                         className="bg-ampere-navy dark:bg-white text-white dark:text-ampere-navy px-8 py-4 rounded-xl font-bold text-sm shadow-navy hover:shadow-navy-lg hover:-translate-y-1 transition-all duration-300 disabled:opacity-50 flex items-center"
                     >
