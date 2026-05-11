@@ -13,8 +13,6 @@ export default defineConfig({
     },
   },
   define: {
-    // Replacements for process.env to allow client-side code to work without a global shim
-    'process.env.API_KEY': JSON.stringify("AIzaSyAmmqhyWpQPUayvwP0doxbeIpUx7aHCtv8"),
     'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
   },
   test: {
@@ -29,7 +27,7 @@ export default defineConfig({
         manualChunks: {
           'pdf-worker': ['pdfjs-dist/build/pdf.worker.mjs'],
           'pdf-lib': ['pdfjs-dist/build/pdf.mjs'],
-          'vendor': ['react', 'react-dom', '@google/genai', 'mammoth', 'marked'],
+          'vendor': ['react', 'react-dom', 'mammoth', 'marked'],
         },
       },
     },
