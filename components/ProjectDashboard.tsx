@@ -511,33 +511,41 @@ export const ProjectDashboard: React.FC<ProjectDashboardProps> = ({
                     <div className="prose prose-slate dark:prose-invert max-w-none">
                         <MarkdownRenderer content={project.report[reportType][selectedSectionId]} />
                     </div>
-
-                    <div className="mt-10 pt-8 border-t border-slate-200 dark:border-slate-700">
-                        <p className="text-sm font-bold text-slate-700 dark:text-slate-300 mb-3">Refine This Section</p>
-                        <div className="flex gap-3">
-                            <input
-                                type="text"
-                                value={correctionInput}
-                                onChange={(e) => setCorrectionInput(e.target.value)}
-                                placeholder="E.g., 'Add more detail on methodology' or 'Make the tone more formal'..."
-                                className="flex-grow p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm focus:ring-2 focus:ring-ampere-mint outline-none placeholder-slate-500 text-slate-900 dark:text-white"
-                            />
-                            <button
-                                onClick={() => {
-                                    const section = activeTemplate?.sections.find(s => s.id === selectedSectionId);
-                                    if (section) handleAction(`refine-report-section-${selectedSectionId}`, {
-                                        section,
-                                        reportType,
-                                        inputs: { assessment: reportAssessment, opinion: reportOpinion },
-                                        correction: correctionInput
-                                    });
-                                }}
-                                disabled={!!activeAction || !correctionInput.trim()}
-                                className="px-6 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl text-sm font-bold hover:shadow-lg transition-all disabled:opacity-50"
-                            >
-                                Refine
-                            </button>
-                        </div>
+                </div>
+                <div className="mt-8 bg-white dark:bg-slate-800 p-6 rounded-[2rem] border-x border-b border-slate-200 dark:border-slate-700 shadow-navy border-t-4 border-t-ampere-navy">
+                    <div className="flex justify-between items-center mb-3">
+                        <h4 className="text-sm font-bold text-slate-800 dark:text-white">Refine Section</h4>
+                        <FileUploadButton
+                            onFileRead={(content) => setCorrectionInput(prev => prev ? prev + '\n\n' + content : content)}
+                            className="text-xs font-bold text-ampere-blue hover:text-ampere-navy flex items-center gap-1 hover:underline"
+                        >
+                            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                            Upload Feedback
+                        </FileUploadButton>
+                    </div>
+                    <div className="flex gap-3">
+                        <input
+                            type="text"
+                            value={correctionInput}
+                            onChange={(e) => setCorrectionInput(e.target.value)}
+                            placeholder="E.g., 'Add more detail on methodology' or 'Make the tone more formal'..."
+                            className="flex-grow p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm focus:ring-2 focus:ring-ampere-mint outline-none transition-all placeholder-slate-500 dark:placeholder-slate-500 text-slate-900 dark:text-white"
+                        />
+                        <button
+                            onClick={() => {
+                                const section = activeTemplate?.sections.find(s => s.id === selectedSectionId);
+                                if (section) handleAction(`refine-report-section-${selectedSectionId}`, {
+                                    section,
+                                    reportType,
+                                    inputs: { assessment: reportAssessment, opinion: reportOpinion },
+                                    correction: correctionInput
+                                });
+                            }}
+                            disabled={!!activeAction || !correctionInput.trim()}
+                            className="px-6 py-3 rounded-xl bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-bold text-sm hover:bg-slate-200 dark:hover:bg-slate-600 disabled:opacity-50 transition-colors border border-slate-200 dark:border-slate-600"
+                        >
+                            Refine
+                        </button>
                     </div>
                 </div>
             ) : (
