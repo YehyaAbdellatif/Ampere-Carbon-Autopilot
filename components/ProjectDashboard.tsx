@@ -4,6 +4,7 @@ import { MarkdownRenderer } from './MarkdownRenderer';
 import { ThinkingBar } from './ThinkingBar';
 import { Spinner } from './Spinner';
 import { FileUploadButton } from './FileUploadButton';
+import { exportService } from '../services/exportService';
 
 interface ProjectDashboardProps {
   project: Project;
@@ -124,6 +125,17 @@ export const ProjectDashboard: React.FC<ProjectDashboardProps> = ({
             </div>
         )}
       </div>
+
+      {project.findings.length > 0 && (
+        <div className="flex justify-end">
+          <button
+            onClick={() => exportService.exportFindings(project)}
+            className="text-xs font-bold text-ampere-blue hover:text-ampere-navy hover:underline transition-colors"
+          >
+            Export Findings
+          </button>
+        </div>
+      )}
 
       {project.findings.length > 0 && (
         <div className="mt-8 bg-white dark:bg-slate-800 p-6 rounded-[2rem] border-x border-b border-slate-200 dark:border-slate-700 shadow-navy border-t-4 border-t-ampere-navy">
@@ -334,7 +346,16 @@ export const ProjectDashboard: React.FC<ProjectDashboardProps> = ({
                 <div className="prose prose-slate dark:prose-invert max-w-none">
                      <MarkdownRenderer content={project.samplingPlan} />
                 </div>
-                
+
+                <div className="flex justify-end mt-4">
+                  <button
+                    onClick={() => exportService.exportSamplingPlan(project)}
+                    className="text-xs font-bold text-ampere-blue hover:text-ampere-navy hover:underline transition-colors"
+                  >
+                    Export Plan
+                  </button>
+                </div>
+
                 <div className="mt-10 pt-8 border-t border-slate-200 dark:border-slate-700">
                     <div className="flex justify-between items-center mb-3">
                         <p className="text-sm font-bold text-slate-700 dark:text-slate-300">Refine Plan</p>
@@ -591,9 +612,14 @@ export const ProjectDashboard: React.FC<ProjectDashboardProps> = ({
                     </div>
                 </div>
             </div>
-            <button onClick={onReset} className="mt-4 md:mt-0 text-slate-500 hover:text-red-500 text-xs font-bold uppercase tracking-wider px-4 py-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors">
-                Exit Project
-            </button>
+            <div className="flex items-center gap-3 mt-4 md:mt-0">
+                <button onClick={() => exportService.exportAll(project)} className="text-ampere-blue hover:text-ampere-navy text-xs font-bold uppercase tracking-wider px-4 py-2 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition-colors">
+                    Export All
+                </button>
+                <button onClick={onReset} className="text-slate-500 hover:text-red-500 text-xs font-bold uppercase tracking-wider px-4 py-2 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors">
+                    Exit Project
+                </button>
+            </div>
         </div>
 
         {/* Segmented Control Navigation */}
