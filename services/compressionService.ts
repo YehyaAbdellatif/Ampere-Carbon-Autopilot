@@ -3,7 +3,8 @@ import { ProjectDocument, LibraryDocument } from '../types';
 const CHAR_LIMIT_PER_DOC = 20000;
 const CHAR_LIMIT_REQUIREMENTS = 30000;
 const CHAR_LIMIT_SUMMARIZE_INPUT = 60000;
-const MAX_FINAL_PROMPT_CHARS = 500000;
+// ~3 chars/token for dense technical text → ~135K tokens, leaving room under the 204K limit
+const MAX_FINAL_PROMPT_CHARS = 400000;
 
 function cleanText(text: string): string {
   return text
@@ -107,9 +108,37 @@ export const compressionService = {
     return cleaned.substring(0, CHAR_LIMIT_REQUIREMENTS) + '\n\n[... requirements truncated for length ...]';
   },
 
+  MAX_FINAL_PROMPT_CHARS,
+
+  /**
+   * Shrink every large text field in the payload by the same ratio so the
+   * rebuilt prompt fits, without cutting off the instructions around them.
+   */
+  shrinkPayload(payload: any, ratio: number): any {
+    const cut = (text: string) => {
+      const keep = Math.floor(text.length * ratio);
+      return text.length <= keep ? text : text.substring(0, keep) + '\n[... truncated to fit context window ...]';
+    };
+    const shrinkDocs = (docs?: { content: string }[]) =>
+      docs?.map(d => ({ ...d, content: cut(d.content || '') }));
+
+    const next = { ...payload };
+    if (next.documents) next.documents = shrinkDocs(next.documents);
+    if (next.libraryDocs) next.libraryDocs = shrinkDocs(next.libraryDocs);
+    if (next.knowledgeBaseDocs) next.knowledgeBaseDocs = shrinkDocs(next.knowledgeBaseDocs);
+    if (typeof next.requirementsText === 'string') next.requirementsText = cut(next.requirementsText);
+    return next;
+  },
+
+  /**
+   * Last-resort safety net: drop text from the middle, keeping the start
+   * (context) and the end (task instructions and output format).
+   */
   enforcePromptLimit(prompt: string): string {
     if (prompt.length <= MAX_FINAL_PROMPT_CHARS) return prompt;
-    console.warn(`Final prompt is ${prompt.length} chars (limit ${MAX_FINAL_PROMPT_CHARS}), truncating`);
-    return prompt.substring(0, MAX_FINAL_PROMPT_CHARS) + '\n\n[... prompt truncated to fit model context window ...]';
+    console.warn(`Final prompt is ${prompt.length} chars (limit ${MAX_FINAL_PROMPT_CHARS}), truncating middle`);
+    const tail = 20000;
+    const head = MAX_FINAL_PROMPT_CHARS - tail;
+    return prompt.substring(0, head) + '\n\n[... content truncated to fit model context window ...]\n\n' + prompt.substring(prompt.length - tail);
   },
 };
